@@ -100,16 +100,19 @@ export const getGrades = async ({ username, password }, period) => {
 						grades: subjectGrades,
 					};
 				});
+			const subjectsWithGrades = subjects.filter(
+				({ grades }) => grades.length > 0
+			);
 			return {
 				grades,
 				periods,
 				subjects,
 				average:
-					subjects.reduce((previousValue, currentValue) => {
+					subjectsWithGrades.reduce((previousValue, currentValue) => {
 						return {
 							value: previousValue.value + currentValue.value,
 						};
-					}).value / subjects.length,
+					}).value / subjectsWithGrades.length,
 			};
 		}
 	});

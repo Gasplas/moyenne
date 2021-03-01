@@ -30,12 +30,12 @@ export default function Home() {
 						return (
 							<Form className="w-full space-y-2">
 								<Field
-									className="bg-accent-1 w-full h-8 rounded px-3 focus:outline-none"
+									className="bg-accent-1 w-full h-8 rounded px-3 focus:outline-none placeholder-accent-4"
 									name="username"
 									placeholder="Nom d'utilisateur"
 								/>
 								<Field
-									className="bg-accent-1 w-full h-8 rounded px-3 focus:outline-none"
+									className="bg-accent-1 w-full h-8 rounded px-3 focus:outline-none placeholder-accent-4"
 									name="password"
 									placeholder="Mot de passe"
 								/>

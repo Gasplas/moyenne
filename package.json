@@ -8,11 +8,15 @@
     "start": "next start"
   },
   "dependencies": {
+    "api-ecoledirecte-france": "^0.1.1",
+    "autoprefixer": "^10.0.4",
+    "classnames": "^2.2.6",
+    "formik": "^2.2.6",
     "next": "latest",
+    "postcss": "^8.1.10",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "autoprefixer": "^10.0.4",
-    "postcss": "^8.1.10",
-    "tailwindcss": "^2.0.2"
+    "tailwindcss": "^2.0.2",
+    "yup": "^0.32.9"
   }
 }

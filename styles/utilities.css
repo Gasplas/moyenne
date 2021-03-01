@@ -1,0 +1,9 @@
+@media (pointer: coarse) {
+	.scrollbar-none::-webkit-scrollbar {
+		@apply hidden;
+	}
+}
+
+.w-page {
+	@apply w-screen max-w-5xl px-4 sm:mx-auto;
+}

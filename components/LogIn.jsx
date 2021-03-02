@@ -27,7 +27,7 @@ export const LogIn = () => {
 		>
 			{({ errors, isSubmitting }) => {
 				return (
-					<Form className="w-full max-w-lg mx-auto space-y-2 h-full flex flex-col justify-center">
+					<Form className="p-4 w-full max-w-lg mx-auto space-y-2 h-full flex flex-col justify-center">
 						<Text h1 className="text-center">
 							Moyenne
 						</Text>

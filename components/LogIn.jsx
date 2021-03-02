@@ -45,7 +45,7 @@ export const LogIn = () => {
 								type={shown ? "text" : "password"}
 							/>
 							<button
-								className="focus:outline-none"
+								className="focus:outline-none hover:text-accent-4 focus:text-accent-4"
 								onClick={() =>
 									setShown((oldShown) => !oldShown)
 								}

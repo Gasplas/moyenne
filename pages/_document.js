@@ -9,8 +9,9 @@ class MyDocument extends Document {
 
 	render() {
 		return (
-			<Html lang="fr">
+			<Html lang="fr" className="h-full w-full">
 				<Head>
+					<title>Moyenne EcoleDirecte</title>
 					<link
 						rel="preload"
 						href="/fonts/inter-var-latin.woff2"
@@ -18,8 +19,9 @@ class MyDocument extends Document {
 						type="font/woff2"
 						crossOrigin="anonymous"
 					/>
+					<link rel="icon" href="/favicon.ico" />
 				</Head>
-				<body className="bg-background text-foreground mx-auto">
+				<body className="bg-background text-foreground mx-auto w-full h-full">
 					<Main />
 					<NextScript />
 				</body>

@@ -1,14 +1,10 @@
 import * as ed from "api-ecoledirecte-france";
 
-export const getGrades = async ({ username, password }, period) => {
-	const to20 = (value, denominator) =>
+export const getGrades = async ({ id, token }, period) => {
+	const to20 = (value, denominator = "20") =>
 		(parseFloat(value.replace(",", ".")) /
 			parseFloat(denominator.replace(",", "."))) *
 		20;
-
-	const token = await ed.login(username, password);
-	const account = await ed.accounts(username, password);
-	const id = account[0].id;
 
 	return ed.getNotes(token, id).then((res) => {
 		if (res !== null && res.code !== 525) {
@@ -38,10 +34,10 @@ export const getGrades = async ({ username, password }, period) => {
 					start: period.dateDebut,
 					end: period.dateFin,
 					name: period.periode,
-					value: period.ensembleMatieres.moyenneGenerale,
-					average: period.ensembleMatieres.moyenneClasse,
-					minimum: period.ensembleMatieres.moyenneMin,
-					maximum: period.ensembleMatieres.moyenneMax,
+					value: to20(period.ensembleMatieres.moyenneGenerale),
+					average: to20(period.ensembleMatieres.moyenneClasse),
+					minimum: to20(period.ensembleMatieres.moyenneMin),
+					maximum: to20(period.ensembleMatieres.moyenneMax),
 				};
 			});
 			if (!period) {
@@ -89,10 +85,10 @@ export const getGrades = async ({ username, password }, period) => {
 					return {
 						id: subject.codeMatiere,
 						name: subject.discipline,
-						average: subject.moyenneClasse,
+						average: to20(subject.moyenneClasse),
 						value: studentAverage,
-						minimum: subject.moyenneMin,
-						maximum: subject.moyenneMax,
+						minimum: to20(subject.moyenneMin),
+						maximum: to20(subject.moyenneMax),
 						teacher: {
 							id: subject.professeurs[0].id,
 							name: subject.professeurs[0].nom,

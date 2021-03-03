@@ -1,13 +1,25 @@
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 import { LogIn } from "../components/LogIn";
 import "../styles/globals.css";
 import { AccountConsumer, AccountProvider } from "../utils";
 
 function MyApp({ Component, pageProps }) {
+	const { pathname, replace } = useRouter();
+	useEffect(() => {
+		if (pathname === "/_error") {
+			replace("/");
+		}
+	}, [pathname]);
 	return (
 		<AccountProvider>
 			<AccountConsumer>
-				{({ token, id }) =>
-					token && id ? <Component {...pageProps} /> : <LogIn />
+				{({ token, account }) =>
+					token && account && account.id ? (
+						<Component {...pageProps} />
+					) : (
+						<LogIn />
+					)
 				}
 			</AccountConsumer>
 		</AccountProvider>

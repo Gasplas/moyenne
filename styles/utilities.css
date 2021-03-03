@@ -7,3 +7,8 @@
 .w-page {
 	@apply w-screen max-w-5xl px-4 sm:mx-auto;
 }
+
+.safe-bottom {
+	padding-bottom: max(constant(safe-area-inset-bottom), 1rem);
+	padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+}

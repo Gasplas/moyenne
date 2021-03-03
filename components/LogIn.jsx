@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { Formik, Field, Form } from "formik";
+import { Formik, Form } from "formik";
 import { object, string } from "yup";
-import { login, accounts } from "api-ecoledirecte-france";
-import { Button, Text } from ".";
-import { Eye, EyeOff } from "../icons";
+import * as ed from "api-ecoledirecte-france";
+import { Button, Text, Input } from ".";
+import { Eye, EyeOff, Lock, User } from "../icons";
 import { useAccount } from "../utils";
 
 export const LogIn = () => {
-	const { setId, setToken } = useAccount();
+	const { setToken, setAccount } = useAccount();
 	const [shown, setShown] = useState(false);
 
 	return (
@@ -18,53 +18,74 @@ export const LogIn = () => {
 				password: string().required(),
 			})}
 			onSubmit={async ({ username, password }) => {
-				const token = await login(username, password);
-				const account = await accounts(username, password);
-				const id = account[0].id;
+				const token = await ed.login(username, password);
+				const accounts = await ed.accounts(username, password);
+				const account = accounts[0];
 				setToken(token);
-				setId(id);
+				setAccount({
+					id: account.id,
+					name: account.prenom,
+					surname: account.nom,
+					email: account.email,
+					school: {
+						id: parseFloat(account.profile.idEtablissement),
+						name: account.profile.nomEtablissement,
+					},
+					class: {
+						id: account.profile.classe.id,
+						code: account.profile.classe.code,
+						name: account.profile.classe.libelle,
+					},
+				});
 			}}
 		>
 			{({ errors, isSubmitting }) => {
 				return (
-					<Form className="p-4 w-full max-w-lg mx-auto space-y-2 h-full flex flex-col justify-center">
+					<Form className="p-4 w-full max-w-lg mx-auto space-y-4 h-full flex flex-col justify-center">
 						<Text h1 className="text-center">
-							Moyenne
+							Se connecter
 						</Text>
-						<Field
-							className="bg-accent-1 w-full h-8 rounded px-3 focus:outline-none placeholder-accent-4"
+						<Input
+							prefix={<User size="1rem" />}
 							name="username"
 							placeholder="Nom d'utilisateur"
+							aria-label="Nom d'utilisateur"
 						/>
-						<div className="bg-accent-1 w-full h-8 rounded px-3 flex space-x-2 items-center text-accent-5">
-							<Field
-								autoCapitalize="none"
-								name="password"
-								placeholder="Mot de passe"
-								className="h-full w-0 flex-1 focus:outline-none text-foreground placeholder-accent-4 bg-transparent"
-								type={shown ? "text" : "password"}
-							/>
-							<button
-								className="focus:outline-none hover:text-accent-4 focus:text-accent-4"
-								onClick={() =>
-									setShown((oldShown) => !oldShown)
-								}
-								type="button"
-							>
-								{shown ? (
-									<EyeOff size="1rem" />
-								) : (
-									<Eye size="1rem" />
-								)}
-							</button>
-						</div>
+						<Input
+							prefix={<Lock size="1rem" />}
+							suffix={
+								<button
+									className="focus:outline-none hover:text-accent-4 focus:text-accent-4"
+									onClick={() =>
+										setShown((oldShown) => !oldShown)
+									}
+									type="button"
+									aria-label={
+										shown
+											? "Cacher le mot de passe"
+											: "Montrer le mot de passe"
+									}
+								>
+									{shown ? (
+										<EyeOff size="1rem" />
+									) : (
+										<Eye size="1rem" />
+									)}
+								</button>
+							}
+							autoCapitalize="none"
+							name="password"
+							placeholder="Mot de passe"
+							type={shown ? "text" : "password"}
+							aria-label="Mot de passe"
+						/>
 						<Button
 							className="w-full"
 							type="submit"
 							disabled={Object.keys(errors).length > 0}
 							loading={isSubmitting}
 						>
-							Me connecter
+							Se connecter
 						</Button>
 					</Form>
 				);

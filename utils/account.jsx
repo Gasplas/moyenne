@@ -1,17 +1,32 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { getGrades } from ".";
 
-export const AccountContext = createContext({ token: null, id: null });
+export const AccountContext = createContext({});
 
 export const useAccount = () => useContext(AccountContext);
 
 export const AccountProvider = ({ children }) => {
 	const [token, setToken] = useState();
-	const [id, setId] = useState();
+	const [account, setAccount] = useState();
 	const [grades, setGrades] = useState();
+
+	useEffect(async () => {
+		if (token && account && account.id && !grades) {
+			const grades = await getGrades({ id: account.id, token });
+			setGrades(grades);
+		}
+	}, [token, account]);
 
 	return (
 		<AccountContext.Provider
-			value={{ token, setToken, id, setId, grades, setGrades }}
+			value={{
+				token,
+				setToken,
+				account,
+				setAccount,
+				grades,
+				setGrades,
+			}}
 		>
 			{children}
 		</AccountContext.Provider>

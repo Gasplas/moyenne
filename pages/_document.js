@@ -20,6 +20,7 @@ class MyDocument extends Document {
 						crossOrigin="anonymous"
 					/>
 					<link rel="icon" href="/favicon.ico" />
+					<meta name="description" content="Moyenne EcoleDirecte" />
 				</Head>
 				<body className="bg-background text-foreground mx-auto w-full h-full">
 					<Main />

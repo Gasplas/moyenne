@@ -21,10 +21,13 @@ export const getGrades = async ({ id, token }, period) => {
 						value: to20(grade.valeur, grade.noteSur),
 						name: grade.devoir,
 						date: grade.date,
+						added: grade.dateSaisie,
 						coefficient: parseFloat(grade.coef),
 						average: to20(grade.moyenneClasse, grade.noteSur),
 						minimum: to20(grade.minClasse, grade.noteSur),
 						maximum: to20(grade.maxClasse, grade.noteSur),
+						on: parseFloat(grade.noteSur.replace(",", ".")),
+						original: parseFloat(grade.valeur.replace(",", ".")),
 					};
 				})
 				.filter(({ value }) => !isNaN(value));
@@ -89,6 +92,9 @@ export const getGrades = async ({ id, token }, period) => {
 						value: studentAverage,
 						minimum: to20(subject.moyenneMin),
 						maximum: to20(subject.moyenneMax),
+						teachers: subject.professeurs.map(({ id, nom }) => {
+							return { id, name: nom };
+						}),
 						teacher: {
 							id: subject.professeurs[0].id,
 							name: subject.professeurs[0].nom,

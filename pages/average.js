@@ -1,40 +1,75 @@
-import { Back, Text, Description } from "../components";
+import { Back, Text, Description, Container, Skeleton } from "../components";
 import { useAccount } from "../utils";
 
 export default function Average() {
 	const { grades } = useAccount();
 
-	return grades && grades.average && grades.period ? (
-		<div className="p-4 w-full max-w-2xl m-auto space-y-4">
-			<header className="sm:flex space-y-2 sm:space-y-0 items-center justify-between">
-				<div>
-					<Back />
-					<Text h1>Moyenne</Text>
-				</div>
-				<Text h3 className="whitespace-nowrap">
-					{grades.average.toLocaleString(undefined, {
-						minimumFractionDigits: 0,
-						maximumFractionDigits: 16,
-					})}
-				</Text>
-			</header>
-			<main className="space-y-2">
-				<Description title="Moyenne de la classe">
-					{grades.period.average.toLocaleString()}
-				</Description>
-				<Description title="Moyenne minimale">
-					{grades.period.minimum.toLocaleString()}
-				</Description>
-				<Description title="Moyenne maximale">
-					{grades.period.maximum.toLocaleString()}
-				</Description>
-				<Description title="Moyennes de la classe, minimale et maximale calculées le">
-					{new Date(grades.period.calculation).toLocaleDateString()} à{" "}
-					{new Date(grades.period.calculation).toLocaleTimeString()}
-				</Description>
-			</main>
-		</div>
-	) : (
-		<></>
+	return (
+		<Container title="Moyenne">
+			{grades && grades.average && grades.period ? (
+				<>
+					<header className="sm:flex space-y-2 sm:space-y-0 items-center justify-between">
+						<div>
+							<Back />
+							<Text h1>Moyenne</Text>
+						</div>
+						<Text h2 className="whitespace-nowrap">
+							{grades.average.toLocaleString(undefined, {
+								minimumFractionDigits: 0,
+								maximumFractionDigits: 16,
+							})}
+						</Text>
+					</header>
+					<main className="space-y-2">
+						<Description title="Moyenne de la classe">
+							{grades.period.average.toLocaleString()}
+						</Description>
+						<Description title="Moyenne minimale">
+							{grades.period.minimum.toLocaleString()}
+						</Description>
+						<Description title="Moyenne maximale">
+							{grades.period.maximum.toLocaleString()}
+						</Description>
+						<Description title="Moyennes de la classe, minimale et maximale calculées le">
+							{new Date(
+								grades.period.calculation
+							).toLocaleDateString()}{" "}
+							à{" "}
+							{new Date(
+								grades.period.calculation
+							).toLocaleTimeString()}
+						</Description>
+					</main>
+				</>
+			) : (
+				<Skeleton.Wrapper className="space-y-5 pt-1">
+					<header className="sm:flex space-y-2 sm:space-y-0 items-center justify-between">
+						<div className="space-y-2">
+							<Skeleton className="h-4 w-20" />
+							<Skeleton className="h-6 w-28" />
+						</div>
+						<Skeleton className="h-5 w-40" />
+					</header>
+					<main className="space-y-3">
+						<div className="space-y-2">
+							<Skeleton className="h-3 w-36" />
+							<Skeleton className="h-4 w-10" />
+						</div>
+						<div className="space-y-2">
+							<Skeleton className="h-3 w-32" />
+							<Skeleton className="h-4 w-10" />
+						</div>
+						<div className="space-y-2">
+							<Skeleton className="h-3 w-32" />
+							<Skeleton className="h-4 w-10" />
+						</div>
+						<div className="space-y-2">
+							<Skeleton className="h-3 w-80" />
+							<Skeleton className="h-4 w-10" />
+						</div>
+					</main>
+				</Skeleton.Wrapper>
+			)}
+		</Container>
 	);
 }

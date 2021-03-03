@@ -14,9 +14,6 @@ function MyApp({ Component, pageProps }) {
 	}, [pathname]);
 	return (
 		<AccountProvider>
-			<Head>
-				<title>{app.name}</title>
-			</Head>
 			<AccountConsumer>
 				{({ token, account }) =>
 					token && account && account.id ? (

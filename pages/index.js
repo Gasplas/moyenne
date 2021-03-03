@@ -1,14 +1,14 @@
 import Link from "next/link";
-import { Text } from "../components";
-import { useAccount } from "../utils";
+import { Container, Skeleton, Text } from "../components";
+import { random, useAccount } from "../utils";
 
 export default function Home() {
 	const { grades } = useAccount();
 
 	return (
-		<main className="p-4 w-full max-w-2xl m-auto space-y-2 safe-bottom">
-			{grades && (
-				<div className="space-y-4">
+		<Container>
+			{grades ? (
+				<>
 					<Link href="/average">
 						<a className="hover:text-accent-6 focus:text-accent-6">
 							<Text h1>
@@ -20,11 +20,12 @@ export default function Home() {
 							</Text>
 						</a>
 					</Link>
+
 					{grades.subjects.map(
 						({ name, value, id, teachers, grades }) => (
 							<section key={id} className="space-y-1">
 								<Link href={`/subjects/${id}`}>
-									<a className="flex items-center justify-between hover:text-accent-6 focus:text-accent-6 group">
+									<a className="flex items-center justify-between hover:text-accent-6 focus:text-accent-6">
 										<div>
 											<Text h3>{name}</Text>
 											<Text
@@ -91,8 +92,28 @@ export default function Home() {
 							</section>
 						)
 					)}
-				</div>
+				</>
+			) : (
+				<Skeleton.Wrapper className="space-y-5 pt-1">
+					<Skeleton className="h-7 w-64" />
+					{[...Array(5)].map((_, i) => (
+						<section className="space-y-2" key={i}>
+							<header className="flex items-center justify-between">
+								<div className="space-y-1">
+									<Skeleton className="h-5 w-32" />
+									<Skeleton className="h-4 w-24" />
+								</div>
+								<Skeleton className="h-5 w-16" />
+							</header>
+							<main className="flex items-center flex-wrap h-5">
+								{[...Array(random(3, 6))].map((_, i) => (
+									<Skeleton className="h-full w-5 mr-3" />
+								))}
+							</main>
+						</section>
+					))}
+				</Skeleton.Wrapper>
 			)}
-		</main>
+		</Container>
 	);
 }

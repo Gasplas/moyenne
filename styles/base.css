@@ -38,3 +38,7 @@
 	font-weight: 400 500 600;
 	src: url("/fonts/inter-var-latin.woff2") format("woff2");
 }
+
+*:focus {
+	outline: none !important;
+}

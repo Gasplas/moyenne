@@ -41,32 +41,30 @@ export const getGrades = async ({ id, token }, period) => {
 					average: to20(period.ensembleMatieres.moyenneClasse),
 					minimum: to20(period.ensembleMatieres.moyenneMin),
 					maximum: to20(period.ensembleMatieres.moyenneMax),
+					calculation:
+						period.ensembleMatieres.dateCalcul.replace(" ", "T") +
+						":00",
 				};
 			});
 			if (!period) {
-				period = periods.find(({ start, end }) => {
-					return (
-						new Date() < new Date(end) &&
-						new Date() > new Date(start)
-					);
-				})
-					? periods.find(({ start, end }) => {
-							return (
-								new Date() < new Date(end) &&
-								new Date() > new Date(start)
-							);
-					  }).id
-					: periods[0].id;
+				period =
+					periods.find(({ start, end }) => {
+						return (
+							new Date() < new Date(end) &&
+							new Date() > new Date(start)
+						);
+					}) || periods[0];
 			}
 			const subjects = data.periodes
 				.find(
-					(p, i) => typeof p === "object" && p.codePeriode === period
+					(p, i) =>
+						typeof p === "object" && p.codePeriode === period.id
 				)
 				.ensembleMatieres.disciplines.map((subject) => {
 					const subjectGrades = grades.filter(
 						(grade) =>
 							grade.subject.id === subject.codeMatiere &&
-							period === grade.period
+							period.id === grade.period
 					);
 					let studentAverage =
 						subjectGrades.reduce((previousValue, currentValue) => {
@@ -108,6 +106,7 @@ export const getGrades = async ({ id, token }, period) => {
 			return {
 				grades,
 				periods,
+				period,
 				subjects,
 				average:
 					subjectsWithGrades.reduce((previousValue, currentValue) => {

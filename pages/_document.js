@@ -8,10 +8,10 @@ class MyDocument extends Document {
 	}
 
 	render() {
+		const appName = "Saiki";
 		return (
 			<Html lang="fr" className="h-full w-full">
 				<Head>
-					<title>Moyenne EcoleDirecte</title>
 					<link
 						rel="preload"
 						href="/fonts/inter-var-latin.woff2"
@@ -43,18 +43,15 @@ class MyDocument extends Document {
 						color="#0095d4"
 					/>
 					<link rel="shortcut icon" href="/icons/favicon.ico" />
-					<meta
-						name="apple-mobile-web-app-title"
-						content="EcoleDirecte"
-					/>
-					<meta name="application-name" content="EcoleDirecte" />
+					<meta name="apple-mobile-web-app-title" content={appName} />
+					<meta name="application-name" content={appName} />
 					<meta name="msapplication-TileColor" content="#ffffff" />
 					<meta
 						name="msapplication-config"
 						content="/icons/browserconfig.xml"
 					/>
 					<meta name="theme-color" content="#ffffff" />
-					<meta name="description" content="Moyenne EcoleDirecte" />
+					<meta name="description" content={appName} />
 				</Head>
 				<body className="bg-background text-foreground mx-auto w-full h-full">
 					<Main />

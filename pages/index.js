@@ -9,21 +9,40 @@ export default function Home() {
 		<main className="p-4 w-full max-w-2xl m-auto space-y-2 safe-bottom">
 			{grades && (
 				<div className="space-y-4">
-					<Text h1>Moyenne : {grades.average}</Text>
+					<Link href="/average">
+						<a className="hover:text-accent-6 focus:text-accent-6">
+							<Text h1>
+								Moyenne :{" "}
+								{grades.average.toLocaleString(undefined, {
+									minimumFractionDigits: 0,
+									maximumFractionDigits: 16,
+								})}
+							</Text>
+						</a>
+					</Link>
 					{grades.subjects.map(
 						({ name, value, id, teachers, grades }) => (
 							<section key={id} className="space-y-1">
-								<header className="flex items-center justify-between">
-									<div>
-										<Text h3>{name}</Text>
-										<Text small className="text-accent-5">
-											{teachers.map(({ name }, i) =>
-												i === 0 ? name : ` • ${name}`
-											)}
+								<Link href={`/subjects/${id}`}>
+									<a className="flex items-center justify-between hover:text-accent-6 focus:text-accent-6 group">
+										<div>
+											<Text h3>{name}</Text>
+											<Text
+												small
+												className="text-accent-5"
+											>
+												{teachers.map(({ name }, i) =>
+													i === 0
+														? name
+														: ` • ${name}`
+												)}
+											</Text>
+										</div>
+										<Text large>
+											{value.toLocaleString()}
 										</Text>
-									</div>
-									<Text large>{value.toLocaleString()}</Text>
-								</header>
+									</a>
+								</Link>
 								<main className="flex items-center flex-wrap">
 									{grades.map(
 										({ value, id, coefficient, added }) => (
@@ -31,7 +50,7 @@ export default function Home() {
 												key={id}
 												href={`/grades/${id}`}
 											>
-												<a className="flex space-x-0.5 mr-3 hover:text-accent-6 focus:text-accent-6 focus:outline-none">
+												<a className="flex space-x-0.5 mr-3 hover:text-accent-6 focus:text-accent-6">
 													<Text
 														bold={
 															Math.abs(

@@ -55,7 +55,7 @@ export const LogIn = () => {
 							prefix={<Lock size="1rem" />}
 							suffix={
 								<button
-									className="focus:outline-none hover:text-accent-4 focus:text-accent-4"
+									className="hover:text-accent-4 focus:text-accent-4"
 									onClick={() =>
 										setShown((oldShown) => !oldShown)
 									}

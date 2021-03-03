@@ -11,7 +11,7 @@ export const Input = ({ children, className, prefix, suffix, ...rest }) => {
 		>
 			{prefix}
 			<Field
-				className="h-full w-0 flex-1 focus:outline-none text-foreground placeholder-accent-4 bg-transparent"
+				className="h-full w-0 flex-1 text-foreground placeholder-accent-4 bg-transparent"
 				{...rest}
 			/>
 			{suffix}

@@ -9,7 +9,7 @@ export const Back = ({ className, ...rest }) => {
 	return (
 		<button
 			className={cn(
-				"text-accent-5 flex items-center space-x-1 focus:outline-none",
+				"text-accent-5 hover:text-accent-4 focus:text-accent-4 flex items-center space-x-1",
 				className
 			)}
 			onClick={() => {

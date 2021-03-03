@@ -6,11 +6,12 @@ export const Container = ({
 	children,
 	as: Component = "div",
 	title,
+	maxWidth = "max-w-2xl",
 	...rest
 }) => {
 	return (
 		<Component
-			className={cn("w-full max-w-2xl m-auto p-4 space-y-4", className)}
+			className={cn("w-full m-auto p-4 space-y-4", maxWidth, className)}
 			{...rest}
 		>
 			<Head>

@@ -11,7 +11,11 @@ export const LogIn = () => {
 	const [shown, setShown] = useState(false);
 
 	return (
-		<Container className="h-full" title="Se connecter">
+		<Container
+			className="h-full flex items-center"
+			title="Se connecter"
+			maxWidth="max-w-lg"
+		>
 			<Formik
 				initialValues={{ username: "", password: "" }}
 				validationSchema={object().shape({
@@ -42,7 +46,7 @@ export const LogIn = () => {
 			>
 				{({ errors, isSubmitting }) => {
 					return (
-						<Form className="p-4 w-full max-w-lg mx-auto space-y-4 h-full flex flex-col justify-center">
+						<Form className="w-full space-y-4">
 							<Text h1 className="text-center">
 								Se connecter
 							</Text>

@@ -28,7 +28,7 @@ export default function Grade() {
 					</Text>
 					<Tag className="mt-1">{grade.subject.name}</Tag>
 				</div>
-				<Text xLarge>
+				<Text xLarge className="whitespace-nowrap">
 					<Text as="span" medium>
 						{grade.value.toLocaleString()}
 					</Text>

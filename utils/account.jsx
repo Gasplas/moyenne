@@ -13,7 +13,6 @@ export const AccountProvider = ({ children }) => {
 	useEffect(async () => {
 		if (token && account && account.id && !grades) {
 			const grades = await getGrades({ id: account.id, token });
-			console.log(grades);
 			setGrades(grades);
 		}
 	}, [token, account]);

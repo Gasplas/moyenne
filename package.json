@@ -8,8 +8,8 @@
     "start": "next start"
   },
   "dependencies": {
-    "api-ecoledirecte-france": "^0.1.1",
     "autoprefixer": "^10.0.4",
+    "axios": "^0.21.1",
     "classnames": "^2.2.6",
     "formik": "^2.2.6",
     "next": "latest",

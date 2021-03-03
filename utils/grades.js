@@ -1,12 +1,11 @@
-import * as ed from "api-ecoledirecte-france";
+import { call } from ".";
 
 export const getGrades = async ({ id, token }, period) => {
 	const to20 = (value, denominator = "20") =>
 		(parseFloat(value.replace(",", ".")) /
 			parseFloat(denominator.replace(",", "."))) *
 		20;
-
-	return ed.getNotes(token, id).then((res) => {
+	return call(`/eleves/${id}/notes.awp?verbe=get&`, { token }).then((res) => {
 		if (res !== null && res.code !== 525) {
 			let data = res.data;
 			const grades = data.notes

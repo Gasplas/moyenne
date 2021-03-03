@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { Formik, Form } from "formik";
 import { object, string } from "yup";
-import * as ed from "api-ecoledirecte-france";
 import { Button, Text, Input, Container } from ".";
 import { Eye, EyeOff, Lock, User } from "../icons";
-import { useAccount } from "../utils";
+import { login, useAccount } from "../utils";
 
 export const LogIn = () => {
 	const { setToken, setAccount } = useAccount();
@@ -22,26 +21,10 @@ export const LogIn = () => {
 					username: string().required(),
 					password: string().required(),
 				})}
-				onSubmit={async ({ username, password }) => {
-					const token = await ed.login(username, password);
-					const accounts = await ed.accounts(username, password);
-					const account = accounts[0];
+				onSubmit={async (values) => {
+					const { token, account } = await login(values);
 					setToken(token);
-					setAccount({
-						id: account.id,
-						name: account.prenom,
-						surname: account.nom,
-						email: account.email,
-						school: {
-							id: parseFloat(account.profile.idEtablissement),
-							name: account.profile.nomEtablissement,
-						},
-						class: {
-							id: account.profile.classe.id,
-							code: account.profile.classe.code,
-							name: account.profile.classe.libelle,
-						},
-					});
+					setAccount(account);
 				}}
 			>
 				{({ errors, isSubmitting }) => {

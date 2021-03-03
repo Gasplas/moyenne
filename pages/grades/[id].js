@@ -38,7 +38,7 @@ export default function Grade() {
 			</header>
 			<main className="space-y-2">
 				<Description title="Coefficient">
-					{grade.coefficient}
+					{grade.coefficient.toLocaleString()}
 				</Description>
 				<Description title="Moyenne">
 					{grade.average.toLocaleString()}

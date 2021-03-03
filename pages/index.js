@@ -17,7 +17,7 @@ export default function Home() {
 									<div>
 										<Text h3>{name}</Text>
 										<Text small className="text-accent-5">
-											{teachers.map(({ id, name }, i) =>
+											{teachers.map(({ name }, i) =>
 												i === 0 ? name : ` • ${name}`
 											)}
 										</Text>
@@ -26,13 +26,7 @@ export default function Home() {
 								</header>
 								<main className="flex items-center flex-wrap">
 									{grades.map(
-										({
-											value,
-											id,
-											coefficient,
-											date,
-											added,
-										}) => (
+										({ value, id, coefficient, added }) => (
 											<Link
 												key={id}
 												href={`/grades/${id}`}

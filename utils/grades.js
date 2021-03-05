@@ -66,22 +66,29 @@ export const getGrades = async ({ id, token }, period) => {
 							period.id === grade.period
 					);
 					let studentAverage =
-						subjectGrades.reduce((previousValue, currentValue) => {
-							return {
-								value:
-									previousValue.value *
-										(previousValue.coefficient || 1) +
-									currentValue.value *
-										currentValue.coefficient,
-							};
-						}).value /
-						subjectGrades.reduce((previousValue, currentValue) => {
-							return {
-								coefficient:
-									previousValue.coefficient +
-									currentValue.coefficient,
-							};
-						}).coefficient;
+						subjectGrades.length > 1
+							? subjectGrades.reduce(
+									(previousValue, currentValue) => {
+										return {
+											value:
+												previousValue.value *
+													(previousValue.coefficient ||
+														1) +
+												currentValue.value *
+													currentValue.coefficient,
+										};
+									}
+							  ).value /
+							  subjectGrades.reduce(
+									(previousValue, currentValue) => {
+										return {
+											coefficient:
+												previousValue.coefficient +
+												currentValue.coefficient,
+										};
+									}
+							  ).coefficient
+							: subjectGrades[0].value;
 					return {
 						id: subject.codeMatiere,
 						name: subject.discipline,
@@ -108,11 +115,18 @@ export const getGrades = async ({ id, token }, period) => {
 				period,
 				subjects,
 				average:
-					subjectsWithGrades.reduce((previousValue, currentValue) => {
-						return {
-							value: previousValue.value + currentValue.value,
-						};
-					}).value / subjectsWithGrades.length,
+					(subjectsWithGrades.length > 1
+						? subjectsWithGrades.reduce(
+								(previousValue, currentValue) => {
+									return {
+										value:
+											previousValue.value +
+											currentValue.value,
+									};
+								}
+						  ).value
+						: subjectsWithGrades[0].value) /
+					subjectsWithGrades.length,
 			};
 		}
 	});

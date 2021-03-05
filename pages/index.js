@@ -107,7 +107,10 @@ export default function Home() {
 							</header>
 							<main className="flex items-center flex-wrap h-5">
 								{[...Array(random(3, 6))].map((_, i) => (
-									<Skeleton className="h-full w-5 mr-3" />
+									<Skeleton
+										className="h-full w-5 mr-3"
+										key={i}
+									/>
 								))}
 							</main>
 						</section>

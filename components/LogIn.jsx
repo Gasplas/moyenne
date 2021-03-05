@@ -22,8 +22,8 @@ export const LogIn = () => {
 					password: string().required(),
 				})}
 				onSubmit={async (values) => {
-					const { token, account } = await login(values);
-					setToken(token);
+					const account = await login(values);
+					setToken(account.token);
 					setAccount(account);
 				}}
 			>

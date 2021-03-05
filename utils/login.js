@@ -6,20 +6,18 @@ export const login = ({ username, password }) =>
 			const account = data.accounts[0];
 			return {
 				token,
-				account: {
-					id: account.id,
-					name: account.prenom,
-					surname: account.nom,
-					email: account.email,
-					school: {
-						id: parseFloat(account.profile.idEtablissement),
-						name: account.profile.nomEtablissement,
-					},
-					class: {
-						id: account.profile.classe.id,
-						code: account.profile.classe.code,
-						name: account.profile.classe.libelle,
-					},
+				id: account.id,
+				name: account.prenom,
+				surname: account.nom,
+				email: account.email,
+				school: {
+					id: parseFloat(account.profile.idEtablissement),
+					name: account.profile.nomEtablissement,
+				},
+				class: {
+					id: account.profile.classe.id,
+					code: account.profile.classe.code,
+					name: account.profile.classe.libelle,
 				},
 			};
 		}

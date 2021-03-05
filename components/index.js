@@ -8,3 +8,4 @@ export * from "./Description";
 export * from "./Back";
 export * from "./Container";
 export * from "./Skeleton";
+export * from "./SegmentedControl";

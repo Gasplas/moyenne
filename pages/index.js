@@ -1,29 +1,32 @@
 import Link from "next/link";
-import { Button, Container, Skeleton, Text } from "../components";
-import { getGrades, random, useAccount } from "../utils";
+import { Container, SegmentedControl, Skeleton, Text } from "../components";
+import { random, useAccount } from "../utils";
 
 export default function Home() {
-	const { grades, account, token } = useAccount();
-	const period =
-		grades &&
-		grades.periods &&
-		grades.periods.find(({ id }) => id === grades.period);
+	const { grades, period, setPeriod } = useAccount();
 
 	return (
 		<Container>
-			{grades ? (
+			{grades && period ? (
 				<>
 					<Link href="/average">
 						<a className="hover:text-accent-6 focus:text-accent-6">
 							<Text h1>
 								Moyenne :{" "}
-								{period.value.toLocaleString(undefined, {
-									minimumFractionDigits: 0,
-									maximumFractionDigits: 16,
-								})}
+								{period.value
+									? period.value.toLocaleString(undefined, {
+											minimumFractionDigits: 0,
+											maximumFractionDigits: 16,
+									  })
+									: "--"}
 							</Text>
 						</a>
 					</Link>
+					<SegmentedControl
+						options={grades.periods}
+						selected={period.id}
+						setSelected={setPeriod}
+					/>
 
 					{period.subjects.map(
 						({ name, value, id, teachers, grades }) => (

@@ -5,19 +5,15 @@ import { useAccount } from "../../utils";
 
 export default function Subject() {
 	const [subject, setSubject] = useState();
-	const { grades } = useAccount();
+	const { period } = useAccount();
 	const { query } = useRouter();
-	const period =
-		grades &&
-		grades.periods &&
-		grades.periods.find(({ id }) => id === grades.period);
 
 	useEffect(() => {
 		if (period) {
 			const subject = period.subjects.find(({ id }) => id === query.id);
 			setSubject(subject);
 		}
-	}, [grades]);
+	}, [period]);
 
 	return (
 		<Container title={subject ? subject.name : "Matière"}>
@@ -28,6 +24,7 @@ export default function Subject() {
 							<Back />
 							<Text h1>{subject.name}</Text>
 							<Text small className="text-accent-5">
+								{period.name} •{" "}
 								{subject.teachers.map(({ name }, i) =>
 									i === 0 ? name : ` • ${name}`
 								)}

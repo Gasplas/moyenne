@@ -2,11 +2,7 @@ import { Back, Text, Description, Container, Skeleton } from "../components";
 import { useAccount } from "../utils";
 
 export default function Average() {
-	const { grades } = useAccount();
-	const period =
-		grades &&
-		grades.periods &&
-		grades.periods.find(({ id }) => id === grades.period);
+	const { period } = useAccount();
 	return (
 		<Container title="Moyenne">
 			{period ? (

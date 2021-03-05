@@ -1,9 +1,13 @@
 import Link from "next/link";
-import { Container, Skeleton, Text } from "../components";
-import { random, useAccount } from "../utils";
+import { Button, Container, Skeleton, Text } from "../components";
+import { getGrades, random, useAccount } from "../utils";
 
 export default function Home() {
-	const { grades } = useAccount();
+	const { grades, account, token } = useAccount();
+	const period =
+		grades &&
+		grades.periods &&
+		grades.periods.find(({ id }) => id === grades.period);
 
 	return (
 		<Container>
@@ -13,7 +17,7 @@ export default function Home() {
 						<a className="hover:text-accent-6 focus:text-accent-6">
 							<Text h1>
 								Moyenne :{" "}
-								{grades.average.toLocaleString(undefined, {
+								{period.value.toLocaleString(undefined, {
 									minimumFractionDigits: 0,
 									maximumFractionDigits: 16,
 								})}
@@ -21,7 +25,7 @@ export default function Home() {
 						</a>
 					</Link>
 
-					{grades.subjects.map(
+					{period.subjects.map(
 						({ name, value, id, teachers, grades }) => (
 							<section key={id} className="space-y-1">
 								<Link href={`/subjects/${id}`}>

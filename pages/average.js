@@ -3,10 +3,13 @@ import { useAccount } from "../utils";
 
 export default function Average() {
 	const { grades } = useAccount();
-
+	const period =
+		grades &&
+		grades.periods &&
+		grades.periods.find(({ id }) => id === grades.period);
 	return (
 		<Container title="Moyenne">
-			{grades && grades.average && grades.period ? (
+			{period ? (
 				<>
 					<header className="sm:flex space-y-2 sm:space-y-0 items-center justify-between">
 						<div>
@@ -14,7 +17,7 @@ export default function Average() {
 							<Text h1>Moyenne</Text>
 						</div>
 						<Text h2 className="whitespace-nowrap">
-							{grades.average.toLocaleString(undefined, {
+							{period.value.toLocaleString(undefined, {
 								minimumFractionDigits: 0,
 								maximumFractionDigits: 16,
 							})}
@@ -22,22 +25,18 @@ export default function Average() {
 					</header>
 					<main className="space-y-2">
 						<Description title="Moyenne de la classe">
-							{grades.period.average.toLocaleString()}
+							{period.average.toLocaleString()}
 						</Description>
 						<Description title="Moyenne minimale">
-							{grades.period.minimum.toLocaleString()}
+							{period.minimum.toLocaleString()}
 						</Description>
 						<Description title="Moyenne maximale">
-							{grades.period.maximum.toLocaleString()}
+							{period.maximum.toLocaleString()}
 						</Description>
 						<Description title="Moyennes de la classe, minimale et maximale calculées le">
-							{new Date(
-								grades.period.calculation
-							).toLocaleDateString()}{" "}
+							{new Date(period.calculation).toLocaleDateString()}{" "}
 							à{" "}
-							{new Date(
-								grades.period.calculation
-							).toLocaleTimeString()}
+							{new Date(period.calculation).toLocaleTimeString()}
 						</Description>
 					</main>
 				</>

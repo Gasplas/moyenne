@@ -7,10 +7,14 @@ export default function Subject() {
 	const [subject, setSubject] = useState();
 	const { grades } = useAccount();
 	const { query } = useRouter();
+	const period =
+		grades &&
+		grades.periods &&
+		grades.periods.find(({ id }) => id === grades.period);
 
 	useEffect(() => {
-		if (grades && grades.subjects) {
-			const subject = grades.subjects.find(({ id }) => id === query.id);
+		if (period) {
+			const subject = period.subjects.find(({ id }) => id === query.id);
 			setSubject(subject);
 		}
 	}, [grades]);
@@ -44,13 +48,9 @@ export default function Subject() {
 							{subject.maximum.toLocaleString()}
 						</Description>
 						<Description title="Moyennes de la classe, minimale et maximale calculées le">
-							{new Date(
-								grades.period.calculation
-							).toLocaleDateString()}{" "}
+							{new Date(period.calculation).toLocaleDateString()}{" "}
 							à{" "}
-							{new Date(
-								grades.period.calculation
-							).toLocaleTimeString()}
+							{new Date(period.calculation).toLocaleTimeString()}
 						</Description>
 					</main>
 				</>

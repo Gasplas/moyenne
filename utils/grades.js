@@ -30,103 +30,124 @@ export const getGrades = async ({ id, token }, period) => {
 					};
 				})
 				.filter(({ value }) => !isNaN(value));
-			const periods = data.periodes.map((period) => {
-				return {
-					id: period.codePeriode,
-					start: period.dateDebut,
-					end: period.dateFin,
-					name: period.periode,
-					value: to20(period.ensembleMatieres.moyenneGenerale),
-					average: to20(period.ensembleMatieres.moyenneClasse),
-					minimum: to20(period.ensembleMatieres.moyenneMin),
-					maximum: to20(period.ensembleMatieres.moyenneMax),
-					calculation:
-						period.ensembleMatieres.dateCalcul.replace(" ", "T") +
-						":00",
-				};
-			});
+			const periods = data.periodes
+				.filter(({ annuel }) => !annuel)
+				.map((period) => {
+					const id = period.codePeriode;
+					const subjects = period.ensembleMatieres.disciplines
+						.filter((subject) =>
+							grades.find(
+								(grade) =>
+									grade.subject.id === subject.codeMatiere &&
+									id === grade.period
+							)
+						)
+						.map((subject) => {
+							const subjectGrades = grades.filter(
+								(grade) =>
+									grade.subject.id === subject.codeMatiere &&
+									id === grade.period
+							);
+							let studentAverage =
+								subjectGrades.length > 0
+									? subjectGrades.length > 1
+										? subjectGrades.reduce(
+												(
+													previousValue,
+													currentValue
+												) => {
+													return {
+														value:
+															previousValue.value *
+																(previousValue.coefficient ||
+																	1) +
+															currentValue.value *
+																currentValue.coefficient,
+													};
+												}
+										  ).value /
+										  subjectGrades.reduce(
+												(
+													previousValue,
+													currentValue
+												) => {
+													return {
+														coefficient:
+															previousValue.coefficient +
+															currentValue.coefficient,
+													};
+												}
+										  ).coefficient
+										: subjectGrades[0].value
+									: null;
+							return {
+								id: subject.codeMatiere,
+								name: subject.discipline,
+								average: to20(subject.moyenneClasse),
+								value: studentAverage,
+								minimum: to20(subject.moyenneMin),
+								maximum: to20(subject.moyenneMax),
+								teachers: subject.professeurs.map(
+									({ id, nom }) => {
+										return { id, name: nom };
+									}
+								),
+								teacher: {
+									id: subject.professeurs[0].id,
+									name: subject.professeurs[0].nom,
+								},
+								grades: subjectGrades,
+							};
+						});
+					return {
+						id: period.codePeriode,
+						start: period.dateDebut,
+						end: period.dateFin,
+						name: period.periode,
+						average: to20(period.ensembleMatieres.moyenneClasse),
+						value:
+							subjects.length > 0
+								? (subjects.length > 1
+										? subjects.reduce(
+												(
+													previousValue,
+													currentValue
+												) => {
+													return {
+														value:
+															previousValue.value +
+															currentValue.value,
+													};
+												}
+										  ).value
+										: subjects[0].value) / subjects.length
+								: null,
+						minimum: to20(period.ensembleMatieres.moyenneMin),
+						maximum: to20(period.ensembleMatieres.moyenneMax),
+						calculation:
+							period.ensembleMatieres.dateCalcul.replace(
+								" ",
+								"T"
+							) + ":00",
+						subjects,
+					};
+				});
+
 			if (!period) {
-				period =
+				period = (
 					periods.find(({ start, end }) => {
 						return (
 							new Date() < new Date(end) &&
 							new Date() > new Date(start)
 						);
-					}) || periods[0];
+					}) || periods[0]
+				).id;
 			}
-			const subjects = data.periodes
-				.find(
-					(p, i) =>
-						typeof p === "object" && p.codePeriode === period.id
-				)
-				.ensembleMatieres.disciplines.map((subject) => {
-					const subjectGrades = grades.filter(
-						(grade) =>
-							grade.subject.id === subject.codeMatiere &&
-							period.id === grade.period
-					);
-					let studentAverage =
-						subjectGrades.length > 1
-							? subjectGrades.reduce(
-									(previousValue, currentValue) => {
-										return {
-											value:
-												previousValue.value *
-													(previousValue.coefficient ||
-														1) +
-												currentValue.value *
-													currentValue.coefficient,
-										};
-									}
-							  ).value /
-							  subjectGrades.reduce(
-									(previousValue, currentValue) => {
-										return {
-											coefficient:
-												previousValue.coefficient +
-												currentValue.coefficient,
-										};
-									}
-							  ).coefficient
-							: subjectGrades[0].value;
-					return {
-						id: subject.codeMatiere,
-						name: subject.discipline,
-						average: to20(subject.moyenneClasse),
-						value: studentAverage,
-						minimum: to20(subject.moyenneMin),
-						maximum: to20(subject.moyenneMax),
-						teachers: subject.professeurs.map(({ id, nom }) => {
-							return { id, name: nom };
-						}),
-						teacher: {
-							id: subject.professeurs[0].id,
-							name: subject.professeurs[0].nom,
-						},
-						grades: subjectGrades,
-					};
-				});
-			const subjectsWithGrades = subjects.filter(
-				({ grades }) => grades.length > 0
-			);
+
 			return {
 				grades,
 				periods,
 				period,
-				subjects,
-				average:
-					(subjectsWithGrades.length > 1
-						? subjectsWithGrades.reduce(
-								(previousValue, currentValue) => {
-									return {
-										value:
-											previousValue.value +
-											currentValue.value,
-									};
-								}
-						  ).value
-						: subjectsWithGrades[0].value) /
-					subjectsWithGrades.length,
 			};
 		}
 	});

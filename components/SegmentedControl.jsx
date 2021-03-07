@@ -39,7 +39,7 @@ export const SegmentedControl = ({
 						style={{ width: (1 / options.length) * 100 + "%" }}
 						type="button"
 					>
-						<Text className="whitespace-nowrap w-full truncate px-1">
+						<Text className="whitespace-nowrap w-full truncate px-1.5">
 							{name}
 						</Text>
 					</button>

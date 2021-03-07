@@ -1,5 +1,5 @@
 import { Back, Text, Description, Container, Skeleton } from "../components";
-import { useAccount } from "../utils";
+import { grade, useAccount } from "../utils";
 
 export default function Average() {
 	const { period } = useAccount();
@@ -16,30 +16,18 @@ export default function Average() {
 							</Text>
 						</div>
 						<Text h2 className="whitespace-nowrap">
-							{period.value.toLocaleString(undefined, {
-								minimumFractionDigits: 0,
-								maximumFractionDigits: 16,
-							})}
+							{grade(period.value, 16)}
 						</Text>
 					</header>
 					<main className="space-y-2">
 						<Description title="Moyenne de la classe">
-							{period.average.toLocaleString(undefined, {
-								minimumFractionDigits: 0,
-								maximumFractionDigits: 2,
-							})}
+							{grade(period.average)}
 						</Description>
 						<Description title="Moyenne minimale">
-							{period.minimum.toLocaleString(undefined, {
-								minimumFractionDigits: 0,
-								maximumFractionDigits: 2,
-							})}
+							{grade(period.minimum)}
 						</Description>
 						<Description title="Moyenne maximale">
-							{period.maximum.toLocaleString(undefined, {
-								minimumFractionDigits: 0,
-								maximumFractionDigits: 2,
-							})}
+							{grade(period.maximum)}
 						</Description>
 						<Description title="Moyennes minimale et maximale calculées le">
 							{new Date(period.calculation).toLocaleDateString()}{" "}

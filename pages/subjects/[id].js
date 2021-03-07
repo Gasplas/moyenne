@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Text, Description, Back, Container, Skeleton } from "../../components";
-import { useAccount } from "../../utils";
+import { grade, useAccount } from "../../utils";
 
 export default function Subject() {
 	const [subject, setSubject] = useState();
@@ -31,30 +31,18 @@ export default function Subject() {
 							</Text>
 						</div>
 						<Text h2 className="whitespace-nowrap">
-							{subject.value.toLocaleString(undefined, {
-								minimumFractionDigits: 0,
-								maximumFractionDigits: 2,
-							})}
+							{grade(subject.value)}
 						</Text>
 					</header>
 					<main className="space-y-2">
 						<Description title="Moyenne de la classe">
-							{subject.average.toLocaleString(undefined, {
-								minimumFractionDigits: 0,
-								maximumFractionDigits: 2,
-							})}
+							{grade(subject.average)}
 						</Description>
 						<Description title="Moyenne minimale">
-							{subject.minimum.toLocaleString(undefined, {
-								minimumFractionDigits: 0,
-								maximumFractionDigits: 2,
-							})}
+							{grade(subject.minimum)}
 						</Description>
 						<Description title="Moyenne maximale">
-							{subject.maximum.toLocaleString(undefined, {
-								minimumFractionDigits: 0,
-								maximumFractionDigits: 2,
-							})}
+							{grade(subject.maximum)}
 						</Description>
 						<Description title="Moyennes minimale et maximale calculées le">
 							{new Date(period.calculation).toLocaleDateString()}{" "}

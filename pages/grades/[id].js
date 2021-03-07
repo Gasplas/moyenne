@@ -8,7 +8,7 @@ import {
 	Container,
 	Skeleton,
 } from "../../components";
-import { useAccount } from "../../utils";
+import { useAccount, grade as g } from "../../utils";
 
 export default function Grade() {
 	const [grade, setGrade] = useState();
@@ -39,45 +39,24 @@ export default function Grade() {
 						</div>
 						<Text xLarge className="whitespace-nowrap">
 							<Text as="span" medium>
-								{grade.value.toLocaleString(undefined, {
-									minimumFractionDigits: 0,
-									maximumFractionDigits: 2,
-								})}
+								{g(grade.value)}
 							</Text>
 							{grade.on !== 20 &&
-								` (${grade.original.toLocaleString(undefined, {
-									minimumFractionDigits: 0,
-									maximumFractionDigits: 2,
-								})}/${grade.on.toLocaleString(undefined, {
-									minimumFractionDigits: 0,
-									maximumFractionDigits: 2,
-								})})`}
+								` (${g(grade.original)}/${g(grade.on)})`}
 						</Text>
 					</header>
 					<main className="space-y-2">
 						<Description title="Coefficient">
-							{grade.coefficient.toLocaleString(undefined, {
-								minimumFractionDigits: 0,
-								maximumFractionDigits: 2,
-							})}
+							{g(grade.coefficient)}
 						</Description>
 						<Description title="Moyenne">
-							{grade.average.toLocaleString(undefined, {
-								minimumFractionDigits: 0,
-								maximumFractionDigits: 2,
-							})}
+							{g(grade.average)}
 						</Description>
 						<Description title="Note minimale">
-							{grade.minimum.toLocaleString(undefined, {
-								minimumFractionDigits: 0,
-								maximumFractionDigits: 2,
-							})}
+							{g(grade.minimum)}
 						</Description>
 						<Description title="Note maximale">
-							{grade.maximum.toLocaleString(undefined, {
-								minimumFractionDigits: 0,
-								maximumFractionDigits: 2,
-							})}
+							{g(grade.maximum)}
 						</Description>
 						<Description title="Ajouté le">
 							{new Date(grade.added).toLocaleDateString()}

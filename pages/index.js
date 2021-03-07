@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Container, SegmentedControl, Skeleton, Text } from "../components";
-import { random, useAccount } from "../utils";
+import { grade, random, useAccount } from "../utils";
 
 export default function Home() {
 	const { grades, period, setPeriod } = useAccount();
@@ -47,12 +47,7 @@ export default function Home() {
 												)}
 											</Text>
 										</div>
-										<Text large>
-											{value.toLocaleString(undefined, {
-												minimumFractionDigits: 0,
-												maximumFractionDigits: 2,
-											})}
-										</Text>
+										<Text large>{grade(value)}</Text>
 									</a>
 								</Link>
 								<main className="flex items-center flex-wrap">
@@ -74,13 +69,7 @@ export default function Home() {
 															1000 * 60 * 60 * 24
 														}
 													>
-														{value.toLocaleString(
-															undefined,
-															{
-																minimumFractionDigits: 0,
-																maximumFractionDigits: 2,
-															}
-														)}
+														{grade(value)}
 													</Text>
 													{coefficient !== 1 && (
 														<Text
@@ -98,13 +87,7 @@ export default function Home() {
 																	24
 															}
 														>
-															{coefficient.toLocaleString(
-																undefined,
-																{
-																	minimumFractionDigits: 0,
-																	maximumFractionDigits: 2,
-																}
-															)}
+															{grade(coefficient)}
 														</Text>
 													)}
 												</a>

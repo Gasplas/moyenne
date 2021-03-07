@@ -34,15 +34,15 @@ export const getGrades = async ({ id, token }, period) => {
 				.filter(({ annuel }) => !annuel)
 				.map((period) => {
 					const id = period.codePeriode;
-					const subjects = period.ensembleMatieres.disciplines
-						.filter((subject) =>
-							grades.find(
-								(grade) =>
-									grade.subject.id === subject.codeMatiere &&
-									id === grade.period
-							)
-						)
-						.map((subject) => {
+					const subjects = period.ensembleMatieres.disciplines.map(
+						(subject) => {
+							const areGrades =
+								grades.find(
+									(grade) =>
+										grade.subject.id ===
+											subject.codeMatiere &&
+										id === grade.period
+								) && true;
 							const subjectGrades = grades.filter(
 								(grade) =>
 									grade.subject.id === subject.codeMatiere &&
@@ -51,8 +51,11 @@ export const getGrades = async ({ id, token }, period) => {
 							const subjectGradesWithGrade = subjectGrades.filter(
 								({ value }) => !isNaN(value)
 							);
+							const subjectGradesWithAverage = subjectGrades.filter(
+								({ average }) => !isNaN(average)
+							);
 							let studentAverage =
-								subjectGradesWithGrade.length > 0
+								areGrades && subjectGradesWithGrade.length > 0
 									? subjectGradesWithGrade.length > 1
 										? subjectGradesWithGrade.reduce(
 												(
@@ -84,9 +87,9 @@ export const getGrades = async ({ id, token }, period) => {
 										: subjectGradesWithGrade[0].value
 									: null;
 							let classAverage =
-								subjectGrades.length > 0
-									? subjectGrades.length > 1
-										? subjectGrades.reduce(
+								areGrades && subjectGradesWithAverage.length > 0
+									? subjectGradesWithAverage.length > 1
+										? subjectGradesWithAverage.reduce(
 												(
 													previousValue,
 													currentValue
@@ -101,7 +104,7 @@ export const getGrades = async ({ id, token }, period) => {
 													};
 												}
 										  ).average /
-										  subjectGrades.reduce(
+										  subjectGradesWithAverage.reduce(
 												(
 													previousValue,
 													currentValue
@@ -113,13 +116,13 @@ export const getGrades = async ({ id, token }, period) => {
 													};
 												}
 										  ).coefficient
-										: subjectGrades[0].value
+										: subjectGradesWithAverage[0].value
 									: null;
 							return {
 								id: subject.codeMatiere,
 								name: subject.discipline,
-								average: classAverage,
-								value: studentAverage,
+								average: areGrades && classAverage,
+								value: areGrades && studentAverage,
 								minimum: to20(subject.moyenneMin),
 								maximum: to20(subject.moyenneMax),
 								teachers: subject.professeurs.map(
@@ -133,7 +136,8 @@ export const getGrades = async ({ id, token }, period) => {
 								},
 								grades: subjectGrades,
 							};
-						});
+						}
+					);
 
 					const subjectsWithGrades = subjects.filter(
 						({ value }) => !isNaN(value)
@@ -215,11 +219,18 @@ export const getGrades = async ({ id, token }, period) => {
 
 			return {
 				grades,
-				periods: periods.filter(
-					({ subjects }) => subjects && subjects.length > 0
-				),
+				periods,
 				period,
 			};
 		}
 	});
+};
+
+export const grade = (number, digits = 2) => {
+	return !number || isNaN(number)
+		? "--"
+		: number.toLocaleString(undefined, {
+				minimumFractionDigits: 0,
+				maximumFractionDigits: digits,
+		  });
 };

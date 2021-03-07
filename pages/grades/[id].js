@@ -39,24 +39,45 @@ export default function Grade() {
 						</div>
 						<Text xLarge className="whitespace-nowrap">
 							<Text as="span" medium>
-								{grade.value.toLocaleString()}
+								{grade.value.toLocaleString(undefined, {
+									minimumFractionDigits: 0,
+									maximumFractionDigits: 2,
+								})}
 							</Text>
 							{grade.on !== 20 &&
-								` (${grade.original.toLocaleString()}/${grade.on.toLocaleString()})`}
+								` (${grade.original.toLocaleString(undefined, {
+									minimumFractionDigits: 0,
+									maximumFractionDigits: 2,
+								})}/${grade.on.toLocaleString(undefined, {
+									minimumFractionDigits: 0,
+									maximumFractionDigits: 2,
+								})})`}
 						</Text>
 					</header>
 					<main className="space-y-2">
 						<Description title="Coefficient">
-							{grade.coefficient.toLocaleString()}
+							{grade.coefficient.toLocaleString(undefined, {
+								minimumFractionDigits: 0,
+								maximumFractionDigits: 2,
+							})}
 						</Description>
 						<Description title="Moyenne">
-							{grade.average.toLocaleString()}
+							{grade.average.toLocaleString(undefined, {
+								minimumFractionDigits: 0,
+								maximumFractionDigits: 2,
+							})}
 						</Description>
 						<Description title="Note minimale">
-							{grade.minimum.toLocaleString()}
+							{grade.minimum.toLocaleString(undefined, {
+								minimumFractionDigits: 0,
+								maximumFractionDigits: 2,
+							})}
 						</Description>
 						<Description title="Note maximale">
-							{grade.maximum.toLocaleString()}
+							{grade.maximum.toLocaleString(undefined, {
+								minimumFractionDigits: 0,
+								maximumFractionDigits: 2,
+							})}
 						</Description>
 						<Description title="Ajouté le">
 							{new Date(grade.added).toLocaleDateString()}

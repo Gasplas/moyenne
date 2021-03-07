@@ -31,20 +31,32 @@ export default function Subject() {
 							</Text>
 						</div>
 						<Text h2 className="whitespace-nowrap">
-							{subject.value.toLocaleString()}
+							{subject.value.toLocaleString(undefined, {
+								minimumFractionDigits: 0,
+								maximumFractionDigits: 2,
+							})}
 						</Text>
 					</header>
 					<main className="space-y-2">
 						<Description title="Moyenne de la classe">
-							{subject.average.toLocaleString()}
+							{subject.average.toLocaleString(undefined, {
+								minimumFractionDigits: 0,
+								maximumFractionDigits: 2,
+							})}
 						</Description>
 						<Description title="Moyenne minimale">
-							{subject.minimum.toLocaleString()}
+							{subject.minimum.toLocaleString(undefined, {
+								minimumFractionDigits: 0,
+								maximumFractionDigits: 2,
+							})}
 						</Description>
 						<Description title="Moyenne maximale">
-							{subject.maximum.toLocaleString()}
+							{subject.maximum.toLocaleString(undefined, {
+								minimumFractionDigits: 0,
+								maximumFractionDigits: 2,
+							})}
 						</Description>
-						<Description title="Moyennes de la classe, minimale et maximale calculées le">
+						<Description title="Moyennes minimale et maximale calculées le">
 							{new Date(period.calculation).toLocaleDateString()}{" "}
 							à{" "}
 							{new Date(period.calculation).toLocaleTimeString()}

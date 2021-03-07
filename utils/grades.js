@@ -8,28 +8,28 @@ export const getGrades = async ({ id, token }, period) => {
 	return call(`/eleves/${id}/notes.awp?verbe=get&`, { token }).then((res) => {
 		if (res !== null && res.code !== 525) {
 			let data = res.data;
-			const grades = data.notes
-				.map((grade, i) => {
-					return {
-						id: i,
-						subject: {
-							name: grade.libelleMatiere,
-							id: grade.codeMatiere,
-						},
-						period: grade.codePeriode,
-						value: to20(grade.valeur, grade.noteSur),
-						name: grade.devoir,
-						date: grade.date,
-						added: grade.dateSaisie,
-						coefficient: parseFloat(grade.coef),
-						average: to20(grade.moyenneClasse, grade.noteSur),
-						minimum: to20(grade.minClasse, grade.noteSur),
-						maximum: to20(grade.maxClasse, grade.noteSur),
-						on: parseFloat(grade.noteSur.replace(",", ".")),
-						original: parseFloat(grade.valeur.replace(",", ".")),
-					};
-				})
-				.filter(({ value }) => !isNaN(value));
+
+			const grades = data.notes.map((grade, i) => {
+				return {
+					id: i,
+					subject: {
+						name: grade.libelleMatiere,
+						id: grade.codeMatiere,
+					},
+					period: grade.codePeriode,
+					value: to20(grade.valeur, grade.noteSur),
+					name: grade.devoir,
+					date: grade.date,
+					added: grade.dateSaisie,
+					coefficient: parseFloat(grade.coef),
+					average: to20(grade.moyenneClasse, grade.noteSur),
+					minimum: to20(grade.minClasse, grade.noteSur),
+					maximum: to20(grade.maxClasse, grade.noteSur),
+					on: parseFloat(grade.noteSur.replace(",", ".")),
+					original: parseFloat(grade.valeur.replace(",", ".")),
+				};
+			});
+
 			const periods = data.periodes
 				.filter(({ annuel }) => !annuel)
 				.map((period) => {
@@ -48,10 +48,13 @@ export const getGrades = async ({ id, token }, period) => {
 									grade.subject.id === subject.codeMatiere &&
 									id === grade.period
 							);
+							const subjectGradesWithGrade = subjectGrades.filter(
+								({ value }) => !isNaN(value)
+							);
 							let studentAverage =
-								subjectGrades.length > 0
-									? subjectGrades.length > 1
-										? subjectGrades.reduce(
+								subjectGradesWithGrade.length > 0
+									? subjectGradesWithGrade.length > 1
+										? subjectGradesWithGrade.reduce(
 												(
 													previousValue,
 													currentValue
@@ -66,6 +69,38 @@ export const getGrades = async ({ id, token }, period) => {
 													};
 												}
 										  ).value /
+										  subjectGradesWithGrade.reduce(
+												(
+													previousValue,
+													currentValue
+												) => {
+													return {
+														coefficient:
+															previousValue.coefficient +
+															currentValue.coefficient,
+													};
+												}
+										  ).coefficient
+										: subjectGradesWithGrade[0].value
+									: null;
+							let classAverage =
+								subjectGrades.length > 0
+									? subjectGrades.length > 1
+										? subjectGrades.reduce(
+												(
+													previousValue,
+													currentValue
+												) => {
+													return {
+														average:
+															previousValue.average *
+																(previousValue.coefficient ||
+																	1) +
+															currentValue.average *
+																currentValue.coefficient,
+													};
+												}
+										  ).average /
 										  subjectGrades.reduce(
 												(
 													previousValue,
@@ -83,7 +118,7 @@ export const getGrades = async ({ id, token }, period) => {
 							return {
 								id: subject.codeMatiere,
 								name: subject.discipline,
-								average: to20(subject.moyenneClasse),
+								average: classAverage,
 								value: studentAverage,
 								minimum: to20(subject.moyenneMin),
 								maximum: to20(subject.moyenneMax),
@@ -99,16 +134,42 @@ export const getGrades = async ({ id, token }, period) => {
 								grades: subjectGrades,
 							};
 						});
+
+					const subjectsWithGrades = subjects.filter(
+						({ value }) => !isNaN(value)
+					);
+					const subjectsWithAverage = subjects.filter(
+						({ average }) => !isNaN(average)
+					);
+
 					return {
 						id: period.codePeriode,
 						start: period.dateDebut,
 						end: period.dateFin,
+						council: period.dateConseil,
 						name: period.periode,
-						average: to20(period.ensembleMatieres.moyenneClasse),
+						average:
+							subjectsWithAverage.length > 0
+								? (subjectsWithAverage.length > 1
+										? subjectsWithAverage.reduce(
+												(
+													previousValue,
+													currentValue
+												) => {
+													return {
+														average:
+															previousValue.average +
+															currentValue.average,
+													};
+												}
+										  ).average
+										: subjectsWithAverage[0].average) /
+								  subjectsWithAverage.length
+								: null,
 						value:
-							subjects.length > 0
-								? (subjects.length > 1
-										? subjects.reduce(
+							subjectsWithGrades.length > 0
+								? (subjectsWithGrades.length > 1
+										? subjectsWithGrades.reduce(
 												(
 													previousValue,
 													currentValue
@@ -120,7 +181,8 @@ export const getGrades = async ({ id, token }, period) => {
 													};
 												}
 										  ).value
-										: subjects[0].value) / subjects.length
+										: subjectsWithGrades[0].value) /
+								  subjectsWithGrades.length
 								: null,
 						minimum: to20(period.ensembleMatieres.moyenneMin),
 						maximum: to20(period.ensembleMatieres.moyenneMax),
@@ -140,13 +202,22 @@ export const getGrades = async ({ id, token }, period) => {
 							new Date() < new Date(end) &&
 							new Date() > new Date(start)
 						);
-					}) || periods[0]
+					}) ||
+					periods.find(({ start, council }) => {
+						return (
+							new Date() < new Date(council) &&
+							new Date() > new Date(start)
+						);
+					}) ||
+					periods[0]
 				).id;
 			}
 
 			return {
 				grades,
-				periods,
+				periods: periods.filter(
+					({ subjects }) => subjects && subjects.length > 0
+				),
 				period,
 			};
 		}

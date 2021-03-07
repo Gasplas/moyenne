@@ -15,7 +15,10 @@ export const AccountProvider = ({ children }) => {
 		if (token && account && account.id && !grades) {
 			const grades = await getGrades({ id: account.id, token });
 			setGrades(grades);
-			setP(grades.periods.find(({ id }) => id === grades.period));
+			setP(
+				grades.periods.find(({ id }) => id === grades.period) ||
+					grades.periods[0]
+			);
 		}
 	}, [token, account]);
 

@@ -11,6 +11,9 @@ export default function Average() {
 						<div>
 							<Back />
 							<Text h1>Moyenne</Text>
+							<Text small className="text-accent-5">
+								{period.name}
+							</Text>
 						</div>
 						<Text h2 className="whitespace-nowrap">
 							{period.value.toLocaleString(undefined, {
@@ -21,15 +24,24 @@ export default function Average() {
 					</header>
 					<main className="space-y-2">
 						<Description title="Moyenne de la classe">
-							{period.average.toLocaleString()}
+							{period.average.toLocaleString(undefined, {
+								minimumFractionDigits: 0,
+								maximumFractionDigits: 2,
+							})}
 						</Description>
 						<Description title="Moyenne minimale">
-							{period.minimum.toLocaleString()}
+							{period.minimum.toLocaleString(undefined, {
+								minimumFractionDigits: 0,
+								maximumFractionDigits: 2,
+							})}
 						</Description>
 						<Description title="Moyenne maximale">
-							{period.maximum.toLocaleString()}
+							{period.maximum.toLocaleString(undefined, {
+								minimumFractionDigits: 0,
+								maximumFractionDigits: 2,
+							})}
 						</Description>
-						<Description title="Moyennes de la classe, minimale et maximale calculées le">
+						<Description title="Moyennes minimale et maximale calculées le">
 							{new Date(period.calculation).toLocaleDateString()}{" "}
 							à{" "}
 							{new Date(period.calculation).toLocaleTimeString()}

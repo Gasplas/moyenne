@@ -9,6 +9,12 @@ export default function Home() {
 		<Container>
 			{grades && period ? (
 				<>
+					<SegmentedControl
+						options={grades.periods}
+						selected={period.id}
+						setSelected={setPeriod}
+						className="mb-4"
+					/>
 					<Link href="/average">
 						<a className="hover:text-accent-6 focus:text-accent-6">
 							<Text h1>
@@ -22,11 +28,6 @@ export default function Home() {
 							</Text>
 						</a>
 					</Link>
-					<SegmentedControl
-						options={grades.periods}
-						selected={period.id}
-						setSelected={setPeriod}
-					/>
 
 					{period.subjects.map(
 						({ name, value, id, teachers, grades }) => (
@@ -47,7 +48,10 @@ export default function Home() {
 											</Text>
 										</div>
 										<Text large>
-											{value.toLocaleString()}
+											{value.toLocaleString(undefined, {
+												minimumFractionDigits: 0,
+												maximumFractionDigits: 2,
+											})}
 										</Text>
 									</a>
 								</Link>
@@ -70,7 +74,13 @@ export default function Home() {
 															1000 * 60 * 60 * 24
 														}
 													>
-														{value.toLocaleString()}
+														{value.toLocaleString(
+															undefined,
+															{
+																minimumFractionDigits: 0,
+																maximumFractionDigits: 2,
+															}
+														)}
 													</Text>
 													{coefficient !== 1 && (
 														<Text
@@ -88,7 +98,13 @@ export default function Home() {
 																	24
 															}
 														>
-															{coefficient.toLocaleString()}
+															{coefficient.toLocaleString(
+																undefined,
+																{
+																	minimumFractionDigits: 0,
+																	maximumFractionDigits: 2,
+																}
+															)}
 														</Text>
 													)}
 												</a>

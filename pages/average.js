@@ -29,11 +29,17 @@ export default function Average() {
 						<Description title="Moyenne maximale">
 							{grade(period.maximum)}
 						</Description>
-						<Description title="Moyennes minimale et maximale calculées le">
-							{new Date(period.calculation).toLocaleDateString()}{" "}
-							à{" "}
-							{new Date(period.calculation).toLocaleTimeString()}
-						</Description>
+						{period.calculation && period.calculation !== ":00" && (
+							<Description title="Moyennes minimale et maximale calculées le">
+								{new Date(
+									period.calculation
+								).toLocaleDateString()}{" "}
+								à{" "}
+								{new Date(
+									period.calculation
+								).toLocaleTimeString()}
+							</Description>
+						)}
 					</main>
 				</>
 			) : (

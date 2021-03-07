@@ -14,6 +14,7 @@ export default function Subject() {
 			setSubject(subject);
 		}
 	}, [period]);
+	console.log(period.calculation);
 
 	return (
 		<Container title={subject ? subject.name : "Matière"}>
@@ -44,11 +45,17 @@ export default function Subject() {
 						<Description title="Moyenne maximale">
 							{grade(subject.maximum)}
 						</Description>
-						<Description title="Moyennes minimale et maximale calculées le">
-							{new Date(period.calculation).toLocaleDateString()}{" "}
-							à{" "}
-							{new Date(period.calculation).toLocaleTimeString()}
-						</Description>
+						{period.calculation && period.calculation !== ":00" && (
+							<Description title="Moyennes minimale et maximale calculées le">
+								{new Date(
+									period.calculation
+								).toLocaleDateString()}{" "}
+								à{" "}
+								{new Date(
+									period.calculation
+								).toLocaleTimeString()}
+							</Description>
+						)}
 					</main>
 				</>
 			) : (

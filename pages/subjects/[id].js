@@ -37,7 +37,7 @@ export default function Subject() {
 					</header>
 					<main className="space-y-2">
 						<Description title="Moyenne de la classe">
-							{grade(subject.average)}
+							{grade(subject.originalAverage)}
 						</Description>
 						<Description title="Moyenne minimale">
 							{grade(subject.minimum)}
@@ -46,7 +46,7 @@ export default function Subject() {
 							{grade(subject.maximum)}
 						</Description>
 						{period.calculation && period.calculation !== ":00" && (
-							<Description title="Moyennes minimale et maximale calculées le">
+							<Description title="Moyennes de classe, minimale et maximale calculées le">
 								{new Date(
 									period.calculation
 								).toLocaleDateString()}{" "}

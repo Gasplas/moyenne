@@ -21,7 +21,7 @@ export default function Average() {
 					</header>
 					<main className="space-y-2">
 						<Description title="Moyenne de la classe">
-							{grade(period.average)}
+							{grade(period.origalAverage)}
 						</Description>
 						<Description title="Moyenne minimale">
 							{grade(period.minimum)}
@@ -30,7 +30,7 @@ export default function Average() {
 							{grade(period.maximum)}
 						</Description>
 						{period.calculation && period.calculation !== ":00" && (
-							<Description title="Moyennes minimale et maximale calculées le">
+							<Description title="Moyennes de classe, minimale et maximale calculées le">
 								{new Date(
 									period.calculation
 								).toLocaleDateString()}{" "}

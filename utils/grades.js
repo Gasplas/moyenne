@@ -122,6 +122,7 @@ export const getGrades = async ({ id, token }, period) => {
 								id: subject.codeMatiere,
 								name: subject.discipline,
 								average: areGrades && classAverage,
+								originalAverage: subject.moyenneClasse,
 								value: areGrades && studentAverage,
 								minimum: to20(subject.moyenneMin),
 								maximum: to20(subject.moyenneMax),
@@ -150,7 +151,7 @@ export const getGrades = async ({ id, token }, period) => {
 						id: period.codePeriode,
 						start: period.dateDebut,
 						end: period.dateFin,
-						council: period.dateConseil,
+						council: `${period.dateConseil}T${period.heureConseil}`,
 						name: period.periode,
 						average:
 							subjectsWithAverage.length > 0
@@ -170,6 +171,7 @@ export const getGrades = async ({ id, token }, period) => {
 										: subjectsWithAverage[0].average) /
 								  subjectsWithAverage.length
 								: null,
+						originalAverage: period.ensembleMatieres.moyenneClasse,
 						value:
 							subjectsWithGrades.length > 0
 								? (subjectsWithGrades.length > 1

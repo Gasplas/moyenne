@@ -11,7 +11,7 @@ export const AccountProvider = ({ children }) => {
 	const [account, setAccount] = useState();
 	const [period, setP] = useState();
 
-	const { data } = useSWR(
+	const { data: gradesData } = useSWR(
 		token &&
 			account &&
 			account.id &&
@@ -21,11 +21,13 @@ export const AccountProvider = ({ children }) => {
 			refreshInterval: 1000 * 60,
 		}
 	);
-	const { grades, periods } = data || {};
+	const { grades, periods } = gradesData || {};
 
 	useEffect(async () => {
 		if (token && account && account.id && periods && !period) {
-			setP(periods.find(({ id }) => id === data.period) || periods[0]);
+			setP(
+				periods.find(({ id }) => id === gradesData.period) || periods[0]
+			);
 		}
 	}, [token, account, periods]);
 

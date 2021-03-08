@@ -7,17 +7,17 @@ import {
 	Skeleton,
 	Text,
 } from "../components";
-import { getDocuments, grade, random, useAccount } from "../utils";
+import { grade, random, useAccount } from "../utils";
 
 export default function Home() {
-	const { grades, period, setPeriod, account, token } = useAccount();
+	const { account, periods, period, setPeriod } = useAccount();
 
 	return (
 		<Container>
-			{grades && period ? (
+			{periods && period ? (
 				<>
 					<SegmentedControl
-						options={grades.periods}
+						options={periods}
 						selected={period.id}
 						setSelected={setPeriod}
 						className="mb-4"

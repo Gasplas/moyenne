@@ -1,6 +1,7 @@
 import { call } from ".";
 
-export const getGrades = async ({ id, token }, period) => {
+export const getGrades = async (arg) => {
+	const { id, token } = JSON.parse(arg);
 	const to20 = (value, denominator = "20") =>
 		(parseFloat(value.replace(",", ".")) /
 			parseFloat(denominator.replace(",", "."))) *
@@ -210,23 +211,21 @@ export const getGrades = async ({ id, token }, period) => {
 					};
 				});
 
-			if (!period) {
-				period = (
-					periods.find(({ start, end }) => {
-						return (
-							new Date() < new Date(end) &&
-							new Date() > new Date(start)
-						);
-					}) ||
-					periods.find(({ start, council }) => {
-						return (
-							new Date() < new Date(council.date) &&
-							new Date() > new Date(start)
-						);
-					}) ||
-					periods[0]
-				).id;
-			}
+			let period = (
+				periods.find(({ start, end }) => {
+					return (
+						new Date() < new Date(end) &&
+						new Date() > new Date(start)
+					);
+				}) ||
+				periods.find(({ start, council }) => {
+					return (
+						new Date() < new Date(council.date) &&
+						new Date() > new Date(start)
+					);
+				}) ||
+				periods[0]
+			).id;
 
 			return {
 				grades,

@@ -5,11 +5,5 @@ export const call = (url, data, get = true) =>
 		`https://api.ecoledirecte.com/v3/${url}.awp${get ? "?verbe=get&" : ""}${
 			get && typeof get !== "boolean" ? get : ""
 		}`,
-		`data=${JSON.stringify(data)}`,
-		{
-			headers: {
-				origin: "https://www.ecoledirecte.com",
-				referer: "https://www.ecoledirecte.com/",
-			},
-		}
+		`data=${JSON.stringify(data)}`
 	).then((res) => res.data);

@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import useSWR from "swr";
 import { getGrades } from ".";
 
 export const AccountContext = createContext({});
@@ -8,22 +9,28 @@ export const useAccount = () => useContext(AccountContext);
 export const AccountProvider = ({ children }) => {
 	const [token, setToken] = useState();
 	const [account, setAccount] = useState();
-	const [grades, setGrades] = useState();
 	const [period, setP] = useState();
 
-	useEffect(async () => {
-		if (token && account && account.id && !grades) {
-			const grades = await getGrades({ id: account.id, token });
-			setGrades(grades);
-			setP(
-				grades.periods.find(({ id }) => id === grades.period) ||
-					grades.periods[0]
-			);
+	const { data } = useSWR(
+		token &&
+			account &&
+			account.id &&
+			JSON.stringify({ token, id: account.id }),
+		getGrades,
+		{
+			refreshInterval: 1000 * 60,
 		}
-	}, [token, account]);
+	);
+	const { grades, periods } = data || {};
+
+	useEffect(async () => {
+		if (token && account && account.id && periods && !period) {
+			setP(periods.find(({ id }) => id === data.period) || periods[0]);
+		}
+	}, [token, account, periods]);
 
 	const setPeriod = (period) =>
-		grades && setP(grades.periods.find(({ id }) => id === period));
+		periods && setP(periods.find(({ id }) => id === period));
 
 	return (
 		<AccountContext.Provider
@@ -33,7 +40,7 @@ export const AccountProvider = ({ children }) => {
 				account,
 				setAccount,
 				grades,
-				setGrades,
+				periods,
 				period,
 				setPeriod,
 			}}

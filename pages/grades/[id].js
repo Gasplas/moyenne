@@ -8,7 +8,7 @@ import {
 	Container,
 	Skeleton,
 } from "../../components";
-import { useAccount, grade as g, date, capitalize } from "../../utils";
+import { grade as g, date, capitalize, useAccount } from "../../utils";
 
 export default function Grade() {
 	const [grade, setGrade] = useState();
@@ -16,10 +16,8 @@ export default function Grade() {
 	const { query } = useRouter();
 
 	useEffect(() => {
-		if (grades && grades.grades) {
-			const grade = grades.grades.find(
-				({ id }) => id === parseFloat(query.id)
-			);
+		if (grades) {
+			const grade = grades.find(({ id }) => id === parseFloat(query.id));
 			setGrade(grade);
 		}
 	}, [grades]);

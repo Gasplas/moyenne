@@ -14,7 +14,6 @@ export default function Subject() {
 			setSubject(subject);
 		}
 	}, [period]);
-	console.log(period.calculation);
 
 	return (
 		<Container title={subject ? subject.name : "Matière"}>

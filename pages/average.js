@@ -3,7 +3,7 @@ import { capitalize, date, grade, time, useAccount } from "../utils";
 
 export default function Average() {
 	const { period } = useAccount();
-	console.log(period);
+
 	return (
 		<Container title="Moyenne">
 			{period ? (

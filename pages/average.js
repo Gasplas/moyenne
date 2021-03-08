@@ -3,6 +3,7 @@ import { grade, useAccount } from "../utils";
 
 export default function Average() {
 	const { period } = useAccount();
+	console.log(period);
 	return (
 		<Container title="Moyenne">
 			{period ? (
@@ -21,7 +22,7 @@ export default function Average() {
 					</header>
 					<main className="space-y-2">
 						<Description title="Moyenne de la classe">
-							{grade(period.origalAverage)}
+							{grade(period.originalAverage)}
 						</Description>
 						<Description title="Moyenne minimale">
 							{grade(period.minimum)}
@@ -29,6 +30,20 @@ export default function Average() {
 						<Description title="Moyenne maximale">
 							{grade(period.maximum)}
 						</Description>
+						{period.council && period.council.date && (
+							<Description title="Conseil de classe">
+								{new Date(
+									period.council.date
+								).toLocaleDateString()}{" "}
+								à{" "}
+								{new Date(
+									period.council.date
+								).toLocaleTimeString()}
+								{period.council.room &&
+									` en
+								salle ${period.council.room}`}
+							</Description>
+						)}
 						{period.calculation && period.calculation !== ":00" && (
 							<Description title="Moyennes de classe, minimale et maximale calculées le">
 								{new Date(

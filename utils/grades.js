@@ -152,8 +152,12 @@ export const getGrades = async ({ id, token }, period) => {
 						start: period.dateDebut,
 						end: period.dateFin,
 						council: {
-							date: `${period.dateConseil}T${period.heureConseil}`,
-							room: period.salleConseil,
+							date: period.dateConseil
+								? `${period.dateConseil}T${
+										period.heureConseil || "00:00"
+								  }:00`
+								: undefined,
+							room: period.salleConseil || undefined,
 						},
 						name: period.periode,
 						average:

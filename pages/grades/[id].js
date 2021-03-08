@@ -8,7 +8,7 @@ import {
 	Container,
 	Skeleton,
 } from "../../components";
-import { useAccount, grade as g } from "../../utils";
+import { useAccount, grade as g, date, capitalize } from "../../utils";
 
 export default function Grade() {
 	const [grade, setGrade] = useState();
@@ -33,7 +33,7 @@ export default function Grade() {
 							<Back />
 							<Text h1>{grade.name}</Text>
 							<Text small className="text-accent-5">
-								{new Date(grade.date).toLocaleDateString()}
+								{capitalize(date(grade.date))}
 							</Text>
 							<Tag className="mt-1">{grade.subject.name}</Tag>
 						</div>
@@ -59,7 +59,7 @@ export default function Grade() {
 							{g(grade.maximum)}
 						</Description>
 						<Description title="Ajouté le">
-							{new Date(grade.added).toLocaleDateString()}
+							{capitalize(date(grade.added))}
 						</Description>
 					</main>
 				</>

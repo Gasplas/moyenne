@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Text, Description, Back, Container, Skeleton } from "../../components";
-import { grade, useAccount } from "../../utils";
+import { capitalize, date, grade, time, useAccount } from "../../utils";
 
 export default function Subject() {
 	const [subject, setSubject] = useState();
@@ -47,13 +47,8 @@ export default function Subject() {
 						</Description>
 						{period.calculation && period.calculation !== ":00" && (
 							<Description title="Moyennes de classe, minimale et maximale calculées le">
-								{new Date(
-									period.calculation
-								).toLocaleDateString()}{" "}
-								à{" "}
-								{new Date(
-									period.calculation
-								).toLocaleTimeString()}
+								{capitalize(date(period.calculation))} à{" "}
+								{time(period.calculation)}
 							</Description>
 						)}
 					</main>

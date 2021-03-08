@@ -1,5 +1,5 @@
 import { Back, Text, Description, Container, Skeleton } from "../components";
-import { grade, useAccount } from "../utils";
+import { capitalize, date, grade, time, useAccount } from "../utils";
 
 export default function Average() {
 	const { period } = useAccount();
@@ -31,14 +31,9 @@ export default function Average() {
 							{grade(period.maximum)}
 						</Description>
 						{period.council && period.council.date && (
-							<Description title="Conseil de classe">
-								{new Date(
-									period.council.date
-								).toLocaleDateString()}{" "}
-								à{" "}
-								{new Date(
-									period.council.date
-								).toLocaleTimeString()}
+							<Description title="Conseil de classe le">
+								{capitalize(date(period.council.date))} à{" "}
+								{time(period.council.date)}
 								{period.council.room &&
 									` en
 								salle ${period.council.room}`}
@@ -46,13 +41,8 @@ export default function Average() {
 						)}
 						{period.calculation && period.calculation !== ":00" && (
 							<Description title="Moyennes de classe, minimale et maximale calculées le">
-								{new Date(
-									period.calculation
-								).toLocaleDateString()}{" "}
-								à{" "}
-								{new Date(
-									period.calculation
-								).toLocaleTimeString()}
+								{capitalize(date(period.calculation))} à{" "}
+								{time(period.calculation)}
 							</Description>
 						)}
 					</main>

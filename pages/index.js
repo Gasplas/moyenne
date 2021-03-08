@@ -1,9 +1,16 @@
 import Link from "next/link";
-import { Container, SegmentedControl, Skeleton, Text } from "../components";
-import { grade, random, useAccount } from "../utils";
+import {
+	Button,
+	Container,
+	Description,
+	SegmentedControl,
+	Skeleton,
+	Text,
+} from "../components";
+import { getDocuments, grade, random, useAccount } from "../utils";
 
 export default function Home() {
-	const { grades, period, setPeriod } = useAccount();
+	const { grades, period, setPeriod, account, token } = useAccount();
 
 	return (
 		<Container>
@@ -17,15 +24,17 @@ export default function Home() {
 					/>
 					<Link href="/average">
 						<a className="hover:text-accent-6 focus:text-accent-6">
-							<Text h1>
-								Moyenne :{" "}
+							<Description
+								h1
+								title={`Moyenne de ${account.name} ${account.surname}`}
+							>
 								{period.value
 									? period.value.toLocaleString(undefined, {
 											minimumFractionDigits: 0,
 											maximumFractionDigits: 16,
 									  })
 									: "--"}
-							</Text>
+							</Description>
 						</a>
 					</Link>
 
@@ -66,7 +75,11 @@ export default function Home() {
 																		added
 																	)
 															) <
-															1000 * 60 * 60 * 24
+															1000 *
+																60 *
+																60 *
+																24 *
+																2
 														}
 													>
 														{grade(value)}
@@ -84,7 +97,8 @@ export default function Home() {
 																1000 *
 																	60 *
 																	60 *
-																	24
+																	24 *
+																	2
 															}
 														>
 															{grade(coefficient)}

@@ -4,3 +4,4 @@ export * from "./app";
 export * from "./random";
 export * from "./api";
 export * from "./login";
+export * from "./documents";

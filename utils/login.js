@@ -1,7 +1,7 @@
 import { call } from ".";
 
 export const login = ({ username, password }) =>
-	call("/login.awp", { identifiant: username, motdepasse: password }).then(
+	call("login", { identifiant: username, motdepasse: password }, false).then(
 		({ token, data }) => {
 			const account = data.accounts[0];
 			return {

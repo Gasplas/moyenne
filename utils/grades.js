@@ -5,7 +5,7 @@ export const getGrades = async ({ id, token }, period) => {
 		(parseFloat(value.replace(",", ".")) /
 			parseFloat(denominator.replace(",", "."))) *
 		20;
-	return call(`/eleves/${id}/notes.awp?verbe=get&`, { token }).then((res) => {
+	return call(`eleves/${id}/notes`, { token }).then((res) => {
 		if (res !== null && res.code !== 525) {
 			let data = res.data;
 
